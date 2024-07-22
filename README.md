@@ -6,7 +6,7 @@ The Toy Store Management Web Application is designed to provide a seamless exper
 
 ## Technology Stack
 
-- **Frontend**: React
+- **Frontend**: HTML,CSS,JS
 - **Backend**: .NET (ASP.NET Core)
 - **Database**: SQL Server
 
@@ -15,15 +15,15 @@ The Toy Store Management Web Application is designed to provide a seamless exper
 ### Signup
 
 - **Description**: Allows users to create an account by providing username, password, and email.
-  
+
 ### Login
 
 - **Description**: Authenticates users and grants access to the application's features using their credentials.
-  
+
 ### Browse Toys
 
 - **Description**: Users can view a list of available toys with detailed information.
-  
+
 #### Filter Toys
 
 - **Description**: Users can refine their search by applying filters:
@@ -31,7 +31,7 @@ The Toy Store Management Web Application is designed to provide a seamless exper
   - **Brand**: Filter toys based on the brand.
   - **Age Range**: Filter toys suitable for different age groups.
   - **Price**: Filter toys within a specified price range.
-  
+
 ### Order Toys
 
 - **Description**: Users can add toys to their cart and proceed to checkout to place an order.

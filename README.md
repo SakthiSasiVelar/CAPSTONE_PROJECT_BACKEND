@@ -6,7 +6,7 @@ The Toy Store Management Web Application is designed to provide a seamless exper
 
 ## Technology Stack
 
-- **Frontend**: HTML,CSS,JS
+- **Frontend**: React
 - **Backend**: .NET (ASP.NET Core)
 - **Database**: SQL Server
 

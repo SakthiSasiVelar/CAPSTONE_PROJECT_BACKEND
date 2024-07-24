@@ -52,6 +52,18 @@ The Toy Store Management Web Application is designed to provide a seamless exper
 
 - **Description**: Displays different color options and images for the same toy.
 
+### Review Toys
+
+- **Leave Reviews**: Leave ratings and reviews for toys.
+
+### Payment
+
+**Payment Methods**: Choose between online payment using Stripe or cash on delivery (COD).
+
+### Discount and Delivery Charges
+
+- **Delivery Charges**: Adding Discounts and include delivery charges in the order.
+
 ## Admin Features
 
 ### Add Toys

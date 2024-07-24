@@ -29,6 +29,8 @@ namespace Toy_Store_Management_Backend.Context
 
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Coupon> Coupons { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,6 +46,7 @@ namespace Toy_Store_Management_Backend.Context
             modelBuilder.Entity<OrderItem>().HasKey(u => u.Id);
             modelBuilder.Entity<Payment>().HasKey(u => u.Id);
             modelBuilder.Entity<Review>().HasKey(u => u.Id);
+            modelBuilder.Entity<Coupon>().HasKey(u => u.Id);
 
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)

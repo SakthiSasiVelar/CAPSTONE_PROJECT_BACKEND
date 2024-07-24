@@ -71,13 +71,19 @@ namespace Toy_Store_Management_Backend
             builder.Services.AddScoped<IRepository<int, User>, UserRepository>();
             builder.Services.AddScoped<IUserAuthDetailsRepository<int, UserAuthDetails>, UserAuthDetailsRepository>();
             builder.Services.AddScoped<IRepository<int, Brand>, BrandRepository>();
-
+            builder.Services.AddScoped<IRepository<int, Category>, CategoryRepository>();
+            builder.Services.AddScoped<IRepository<int, Toy> , ToyRepository> ();
+            builder.Services.AddScoped<IRepository<int,CartItem> , CartItemRepository>();
             #endregion
 
             #region Services
             builder.Services.AddScoped<IAuthService, AuthServiceBL>();
             builder.Services.AddScoped<ITokenService , TokenServiceBL>();
             builder.Services.AddScoped<IBrandService, BrandServiceBL>();
+            builder.Services.AddScoped<ICategoryService , CategoryServiceBL>();
+            builder.Services.AddScoped<IBlobService, BlobService>();
+            builder.Services.AddScoped<IToyService, ToyServiceBL>();
+            builder.Services.AddScoped<ICartItemService , CartItemServiceBL>();
             #endregion
 
             #region CORS

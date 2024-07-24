@@ -1,9 +1,9 @@
-﻿using Toy_Store_Management_Backend.Models;
-
-namespace Toy_Store_Management_Backend.DTOs
+﻿namespace Toy_Store_Management_Backend.DTOs
 {
-    public class AddToyDTO
+    public class ToyFilterReturnDTO
     {
+        public int ToyId { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -18,8 +18,10 @@ namespace Toy_Store_Management_Backend.DTOs
 
         public string Discount { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public int Quantity { get; set; }
 
-        public string ImageUrl { get; set; }
+        public DateTime ArrivalDateTime { get; set; }
     }
 }

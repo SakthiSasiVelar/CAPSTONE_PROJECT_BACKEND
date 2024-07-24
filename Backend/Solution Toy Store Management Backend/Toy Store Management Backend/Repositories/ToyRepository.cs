@@ -6,52 +6,51 @@ using Toy_Store_Management_Backend.Models;
 
 namespace Toy_Store_Management_Backend.Repositories
 {
-    public class BrandRepository : IRepository<int, Brand>
+    public class ToyRepository : IRepository<int, Toy>
     {
-        private readonly ToyStoreManagementDbContext _context;
+        private readonly ToyStoreManagementDbContext _dbContext;
 
-        public BrandRepository(ToyStoreManagementDbContext context)
+        public ToyRepository(ToyStoreManagementDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
-
-        public async Task<Brand> Add(Brand entity)
+        public async Task<Toy> Add(Toy entity)
         {
             try
             {
-                _context.Brands.Add(entity);
-                await _context.SaveChangesAsync();
+                _dbContext.Toys.Add(entity);
+                await _dbContext.SaveChangesAsync();
                 return entity;
             }
             catch(Exception ex)
             {
-                throw new BrandNotAddException();
+                throw new ToyNotAddException();
             }
         }
 
-        public Task<Brand> Delete(int id)
+        public Task<Toy> Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Brand>> GetAll()
+        public async Task<IEnumerable<Toy>> GetAll()
         {
             try
             {
-                return await _context.Brands.ToListAsync();
+                return await _dbContext.Toys.ToListAsync();
             }
             catch(Exception ex)
             {
-                throw new BrandListNotFoundException();
+                throw new ToyListNotFoundException();
             }
         }
 
-        public Task<Brand> GetById(int id)
+        public Task<Toy> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Brand> Update(Brand entity)
+        public Task<Toy> Update(Toy entity)
         {
             throw new NotImplementedException();
         }

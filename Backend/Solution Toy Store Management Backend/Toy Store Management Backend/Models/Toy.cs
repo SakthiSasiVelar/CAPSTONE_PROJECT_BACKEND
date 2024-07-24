@@ -24,6 +24,8 @@
 
         public DateTime ArrivalDate { get; set; }
 
+        public int Quantity { get; set; }
+
         public string ImageUrl { get; set; }
 
         public ICollection<Review> Reviews { get; set; }

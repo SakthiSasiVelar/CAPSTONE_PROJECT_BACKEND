@@ -6,52 +6,51 @@ using Toy_Store_Management_Backend.Models;
 
 namespace Toy_Store_Management_Backend.Repositories
 {
-    public class BrandRepository : IRepository<int, Brand>
+    public class CategoryRepository : IRepository<int, Category>
     {
-        private readonly ToyStoreManagementDbContext _context;
+        private readonly ToyStoreManagementDbContext _dbContext;
 
-        public BrandRepository(ToyStoreManagementDbContext context)
+        public CategoryRepository(ToyStoreManagementDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
-
-        public async Task<Brand> Add(Brand entity)
+        public async Task<Category> Add(Category entity)
         {
             try
             {
-                _context.Brands.Add(entity);
-                await _context.SaveChangesAsync();
+                _dbContext.Categories.Add(entity);
+                await _dbContext.SaveChangesAsync();
                 return entity;
             }
             catch(Exception ex)
             {
-                throw new BrandNotAddException();
+                throw new CategoryNotAddException();
             }
         }
 
-        public Task<Brand> Delete(int id)
+        public Task<Category> Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Brand>> GetAll()
+        public async Task<IEnumerable<Category>> GetAll()
         {
             try
             {
-                return await _context.Brands.ToListAsync();
+                return await _dbContext.Categories.ToListAsync();
             }
             catch(Exception ex)
             {
-                throw new BrandListNotFoundException();
+                throw new CategoryListNotFoundException();
             }
         }
 
-        public Task<Brand> GetById(int id)
+        public Task<Category> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Brand> Update(Brand entity)
+        public Task<Category> Update(Category entity)
         {
             throw new NotImplementedException();
         }

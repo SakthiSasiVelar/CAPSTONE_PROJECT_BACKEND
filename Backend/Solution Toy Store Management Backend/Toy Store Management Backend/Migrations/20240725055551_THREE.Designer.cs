@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Toy_Store_Management_Backend.Context;
 
@@ -11,9 +12,11 @@ using Toy_Store_Management_Backend.Context;
 namespace Toy_Store_Management_Backend.Migrations
 {
     [DbContext(typeof(ToyStoreManagementDbContext))]
-    partial class ToyStoreManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240725055551_THREE")]
+    partial class THREE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,15 +139,7 @@ namespace Toy_Store_Management_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DeliveryCharge")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -154,7 +149,7 @@ namespace Toy_Store_Management_Backend.Migrations
                     b.Property<int>("Pincode")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SuccessFulPaymentId")
+                    b.Property<int>("SuccessFulPaymentId")
                         .HasColumnType("int");
 
                     b.Property<string>("TotalAmount")
@@ -167,8 +162,7 @@ namespace Toy_Store_Management_Backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("SuccessFulPaymentId")
-                        .IsUnique()
-                        .HasFilter("[SuccessFulPaymentId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -199,9 +193,6 @@ namespace Toy_Store_Management_Backend.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("StatusActionDateTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("ToyId")
                         .HasColumnType("int");
@@ -422,7 +413,8 @@ namespace Toy_Store_Management_Backend.Migrations
                     b.HasOne("Toy_Store_Management_Backend.Models.Payment", "SuccessFulPayment")
                         .WithOne("SuccessFulOrder")
                         .HasForeignKey("Toy_Store_Management_Backend.Models.Order", "SuccessFulPaymentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Toy_Store_Management_Backend.Models.User", "User")
                         .WithMany("Orders")

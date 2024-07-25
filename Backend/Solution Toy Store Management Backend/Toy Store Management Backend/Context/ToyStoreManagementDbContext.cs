@@ -135,12 +135,6 @@ namespace Toy_Store_Management_Backend.Context
                 .HasForeignKey(t => t.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Payment>()
-                .HasOne(p => p.Order)
-                .WithMany(o => o.Payments)
-                .HasForeignKey(p => p.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.SuccessFulPayment)
                 .WithOne(p => p.SuccessFulOrder)

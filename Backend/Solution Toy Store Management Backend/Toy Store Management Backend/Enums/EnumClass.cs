@@ -7,5 +7,12 @@
             Admin,
             User
         }
+
+        public enum OrderStatus
+        {
+           Confirmed,
+           Shipped,
+           Delivered
+        }
     }
 }

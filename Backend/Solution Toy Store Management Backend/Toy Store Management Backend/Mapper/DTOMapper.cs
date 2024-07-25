@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 using System.Text;
 using Toy_Store_Management_Backend.DTOs;
 using Toy_Store_Management_Backend.Enums;
@@ -238,6 +239,101 @@ namespace Toy_Store_Management_Backend.Mapper
                 cartItemReturnDTOList.Add(cartItemReturnDTO);
             }
             return cartItemReturnDTOList;
+        }
+
+        public async Task<CheckCouponCodeReturnDTO> CouponToCheckCouponCodeReturnDTO(Coupon coupon)
+        {
+            CheckCouponCodeReturnDTO checkCouponCodeReturnDTO = new CheckCouponCodeReturnDTO()
+            {
+                DiscountPrice = coupon.DiscountPrice,
+            };
+            return checkCouponCodeReturnDTO;
+        }
+
+        public async Task<Order> AddOrderDtoToOrder(AddOrderDTO addOrderDTO)
+        {
+            Order order = new Order()
+            {
+                Name = addOrderDTO.Name,
+                UserId = addOrderDTO.UserId,
+                ContactNumber = addOrderDTO.ContactNumber,
+                TotalAmount = addOrderDTO.TotalAmount,
+                DeliveryCharge = addOrderDTO.DeliveryCharge,
+                SuccessFulPaymentId = addOrderDTO.SuccessFulPaymentId,
+                Pincode = addOrderDTO.Pincode,
+                Address = addOrderDTO.Address,
+            };
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime istNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, istTimeZone);
+            order.OrderDateTime = istNow;
+            return order;
+
+        }
+
+        public async Task<AddOrderReturnDTO> OrderToAddOrderReturnDto(Order order)
+        {
+            AddOrderReturnDTO addOrderReturnDTO = new AddOrderReturnDTO()
+            {
+                Name = order.Name,
+                OrderId = order.Id,
+                ContactNumber = order.ContactNumber,
+                Address = order.Address,
+                Pincode = order.Pincode,
+                TotalAmount = order.TotalAmount,
+                SuccessFulPaymentId = order.SuccessFulPaymentId,
+                OrderDateTime = order.OrderDateTime,
+                DeliveryCharge = order.DeliveryCharge,
+                UserId = order.UserId,
+            };
+            return addOrderReturnDTO;
+        }
+
+        public async Task<OrderItem> AddOrderItemDtoToOrderItem(AddOrderItemDTO addOrderItemDTO)
+        {
+            OrderItem orderItem = new OrderItem()
+            {
+                OrderId = addOrderItemDTO.OrderId,
+                ToyId = addOrderItemDTO.ToyId,
+                Quantity = addOrderItemDTO.Quantity,
+                Price = addOrderItemDTO.Price,
+                OrderStatus = EnumClass.OrderStatus.Confirmed.ToString()
+            };
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime istNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, istTimeZone);
+            orderItem.StatusActionDateTime = istNow;
+            return orderItem;
+        }
+
+        public async Task<AddOrderItemReturnDTO> OrderItemToAddOrderItemReturnDto(OrderItem orderItem)
+        {
+            AddOrderItemReturnDTO addOrderItemReturnDTO = new AddOrderItemReturnDTO()
+            {
+                OrderItemId = orderItem.Id,
+                OrderId = orderItem.OrderId,
+                ToyId = orderItem.ToyId,
+                Price = orderItem.Price,
+                Quantity = orderItem.Quantity,
+                OrderStatus = orderItem.OrderStatus,
+                StatusActionDateTime = orderItem.StatusActionDateTime
+            };
+            return addOrderItemReturnDTO;
+        }
+
+        public async Task<UpdateOrderItemStatusReturnDTO> OrderItemToUpdateOrderItemStatusReturnDTO(OrderItem orderItem)
+        {
+            UpdateOrderItemStatusReturnDTO updateOrderItemStatusReturnDTO = new UpdateOrderItemStatusReturnDTO()
+            {
+                OrderItemId = orderItem.Id,
+                OrderId = orderItem.OrderId,
+                OrderItemStatus = orderItem.OrderStatus,
+                ToyId = orderItem.ToyId,
+                Price = orderItem.Price,
+                Quantity = orderItem.Quantity,
+                StatusActionDateTime = orderItem.StatusActionDateTime
+            };
+            return updateOrderItemStatusReturnDTO;
         }
     }
 }

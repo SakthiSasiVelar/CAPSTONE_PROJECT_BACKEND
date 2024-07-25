@@ -1,12 +1,12 @@
-﻿namespace Toy_Store_Management_Backend.Models
+﻿using Toy_Store_Management_Backend.Models;
+
+namespace Toy_Store_Management_Backend.DTOs
 {
-    public class Order
+    public class AddOrderReturnDTO
     {
-        public int Id { get; set; }
+        public int OrderId { get; set; }
 
         public int UserId { get; set; }
-
-        public User User { get; set; }
 
         public string Name { get; set; }
 
@@ -22,12 +22,6 @@
 
         public int? SuccessFulPaymentId { get; set; }
 
-        public Payment SuccessFulPayment { get; set; }
-
         public DateTime OrderDateTime { get; set; }
-
-        public ICollection<OrderItem> OrderItems { get; set; }
-
-        public ICollection<Payment> Payments { get; set; }
     }
 }

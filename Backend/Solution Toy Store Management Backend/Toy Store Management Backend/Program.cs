@@ -74,6 +74,11 @@ namespace Toy_Store_Management_Backend
             builder.Services.AddScoped<IRepository<int, Category>, CategoryRepository>();
             builder.Services.AddScoped<IRepository<int, Toy> , ToyRepository> ();
             builder.Services.AddScoped<IRepository<int,CartItem> , CartItemRepository>();
+            builder.Services.AddScoped<UserOrderRepository ,  UserOrderRepository>();
+            builder.Services.AddScoped<IRepository<int,Order> , OrderRepository>();
+            builder.Services.AddScoped<IRepository<int,Coupon>, CouponRepository>();
+            builder.Services.AddScoped<IRepository<int,OrderItem> , OrderItemRepository>();
+
             #endregion
 
             #region Services
@@ -84,6 +89,9 @@ namespace Toy_Store_Management_Backend
             builder.Services.AddScoped<IBlobService, BlobService>();
             builder.Services.AddScoped<IToyService, ToyServiceBL>();
             builder.Services.AddScoped<ICartItemService , CartItemServiceBL>();
+            builder.Services.AddScoped<ICouponService , CouponServiceBL>();
+            builder.Services.AddScoped<IOrderService, OrderServiceBL>();
+            builder.Services.AddScoped<IOrderItemService , OrderItemServiceBL>();
             #endregion
 
             #region CORS

@@ -18,6 +18,8 @@
 
         public string OrderStatus { get; set; }
 
+        public DateTime StatusActionDateTime { get; set; }
+
         public string? CancelReason { get; set; }
     }
 }

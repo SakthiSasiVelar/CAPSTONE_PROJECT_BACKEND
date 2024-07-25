@@ -8,7 +8,7 @@ namespace Toy_Store_Management_Backend.Repositories
 {
     public class UserRepository : IRepository<int, User>
     {
-        private readonly ToyStoreManagementDbContext _context;
+        protected readonly ToyStoreManagementDbContext _context;
 
         public UserRepository(ToyStoreManagementDbContext context)
         {
@@ -48,7 +48,7 @@ namespace Toy_Store_Management_Backend.Repositories
             }
         }
 
-        public async Task<IEnumerable<User>> GetAll()
+        public  async Task<IEnumerable<User>> GetAll()
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Toy_Store_Management_Backend.Repositories
             }
         }
 
-        public async Task<User> GetById(int id)
+        public virtual async Task<User> GetById(int id)
         {
             try
             {

@@ -5,5 +5,7 @@ namespace Toy_Store_Management_Backend.Interface
     public interface IBrandService
     {
         public Task<AddBrandReturnDTO> AddBrand(AddBrandDTO addBrandDTO);
+
+        public Task<List<BrandReturnDTO>> GetAllBrands();
     }
 }

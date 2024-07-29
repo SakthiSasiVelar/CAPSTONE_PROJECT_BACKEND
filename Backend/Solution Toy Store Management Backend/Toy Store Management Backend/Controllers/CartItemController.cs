@@ -17,7 +17,7 @@ namespace Toy_Store_Management_Backend.Controllers
             _cartItemService = cartItemService;
         }
 
-        [HttpPost("cartItem/addCartItem")]
+        [HttpPost("cartItem/add")]
 
         public async Task<ActionResult<AddCartItemReturnDTO>> CartItemAdd([FromBody]AddCartItemDTO addCartItemDTO)
         {
@@ -33,7 +33,7 @@ namespace Toy_Store_Management_Backend.Controllers
             }
         }
 
-        [HttpPut("cartItem/updateCartItem")]
+        [HttpPut("cartItem/update")]
 
         public async Task<ActionResult<UpdateCartItemReturnDTO>> CartItemUpdate([FromBody] UpdateCartItemDTO updateCartItemDTO)
         {
@@ -53,7 +53,7 @@ namespace Toy_Store_Management_Backend.Controllers
             }
         }
 
-        [HttpDelete("cartItem/deleteCartItem/{cartItemId}")]
+        [HttpDelete("cartItem/delete/{cartItemId}")]
 
         public async Task<ActionResult<DeleteCartItemReturnDTO>> CartItemDelete(int cartItemId)
         {
@@ -73,7 +73,7 @@ namespace Toy_Store_Management_Backend.Controllers
             }
         }
 
-        [HttpGet("cartItem/getCartItem/user/{userId}")]
+        [HttpGet("cartItem/get/user/{userId}")]
 
         public async Task<ActionResult<List<CartItemReturnDTO>>> GetCartItemByUserId(int userId)
         {

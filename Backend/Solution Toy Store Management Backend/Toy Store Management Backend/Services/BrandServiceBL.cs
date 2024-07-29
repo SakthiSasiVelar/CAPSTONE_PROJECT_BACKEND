@@ -28,5 +28,18 @@ namespace Toy_Store_Management_Backend.Services
                 throw new BrandNotAddException();
             }
         }
+
+        public async Task<List<BrandReturnDTO>> GetAllBrands()
+        {
+            try
+            {
+                var result = await _brandRepository.GetAll();
+                return await new DTOMapper().BrandListToBrandReturnDTOList(result.ToList());
+            }
+            catch(Exception ex)
+            {
+                throw new BrandListNotFoundException();
+            }
+        }
     }
 }

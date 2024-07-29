@@ -32,5 +32,22 @@ namespace Toy_Store_Management_Backend.Controllers
                 return StatusCode(500, new ErrorModel(500, ex.Message));
             }
         }
+
+        [HttpGet("brand/getAll")]
+
+        public async Task<ActionResult<List<BrandReturnDTO>>> BrandGetAll()
+        {
+            try
+            {
+                var result = await _brandService.GetAllBrands();
+                var response = new SuccessResponseModel<List<BrandReturnDTO>>(200, "Brand list fetched successfully", result);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+
+        }
     }
 }

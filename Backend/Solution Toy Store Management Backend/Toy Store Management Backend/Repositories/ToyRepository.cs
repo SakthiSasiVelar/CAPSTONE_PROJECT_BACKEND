@@ -8,7 +8,7 @@ namespace Toy_Store_Management_Backend.Repositories
 {
     public class ToyRepository : IRepository<int, Toy>
     {
-        private readonly ToyStoreManagementDbContext _dbContext;
+        protected readonly ToyStoreManagementDbContext _dbContext;
 
         public ToyRepository(ToyStoreManagementDbContext dbContext)
         {
@@ -33,7 +33,7 @@ namespace Toy_Store_Management_Backend.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Toy>> GetAll()
+        public virtual async Task<IEnumerable<Toy>> GetAll()
         {
             try
             {
@@ -45,9 +45,22 @@ namespace Toy_Store_Management_Backend.Repositories
             }
         }
 
-        public Task<Toy> GetById(int id)
+        public virtual  async Task<Toy> GetById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _dbContext.Toys.SingleOrDefaultAsync(x => x.Id == id);
+                if (result != null) return result;
+                throw new ToyNotFoundException(id);
+            }
+            catch (ToyNotFoundException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                throw new ToyNotGetException(id);
+            }
         }
 
         public Task<Toy> Update(Toy entity)

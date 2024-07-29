@@ -12,7 +12,8 @@
         {
            Confirmed,
            Shipped,
-           Delivered
+           Delivered,
+           Cancelled
         }
     }
 }

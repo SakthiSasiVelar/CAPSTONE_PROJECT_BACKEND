@@ -17,7 +17,7 @@ namespace Toy_Store_Management_Backend.Controllers
             _couponService = couponService;
         }
 
-        [HttpGet("coupon/validCoupon/firstOrder")]
+        [HttpGet("coupon/valid/firstOrder")]
 
         public async Task<ActionResult<CheckCouponCodeReturnDTO>> ValidCoupon([FromBody]CheckCouponCodeDTO checkCouponCodeDTO)
         {

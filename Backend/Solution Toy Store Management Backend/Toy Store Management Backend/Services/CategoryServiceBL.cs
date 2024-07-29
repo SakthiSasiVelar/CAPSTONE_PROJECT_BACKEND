@@ -28,6 +28,17 @@ namespace Toy_Store_Management_Backend.Services
             }
         }
 
-       
+        public async Task<List<CategoryReturnDTO>> GetAllCategory()
+        {
+            try
+            {
+                var categoryList = await _categoryRepository.GetAll();
+                return await new DTOMapper().CategoryListToCategoryReturnDTOList(categoryList.ToList());
+            }
+            catch(Exception ex)
+            {
+                throw new CategoryListNotFoundException();
+            }
+        }
     }
 }

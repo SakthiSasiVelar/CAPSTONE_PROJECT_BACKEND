@@ -16,7 +16,7 @@ namespace Toy_Store_Management_Backend.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost("order/addOrder")]
+        [HttpPost("order/add")]
 
         public async Task<ActionResult<AddOrderReturnDTO>> Add([FromBody] AddOrderDTO addOrderDTO)
         {

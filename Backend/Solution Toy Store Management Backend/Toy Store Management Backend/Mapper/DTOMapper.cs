@@ -45,14 +45,15 @@ namespace Toy_Store_Management_Backend.Mapper
             return userRegisterReturnDTO;
         }
 
-        public async Task<LoginReturnDTO> UserAuthDetailstoLoginReturnDTO(UserAuthDetails userAuthDetails , string token)
+        public async Task<LoginReturnDTO> UserAuthDetailstoLoginReturnDTO(UserAuthDetails userAuthDetails , string token , string name)
         {
             LoginReturnDTO loginReturnDTO = new LoginReturnDTO()
             {
                 Email = userAuthDetails.Email,
                 UserId = userAuthDetails.UserId,
                 Role = userAuthDetails.Role,
-                Token = token
+                Token = token,
+                Name = name,
             };
             return loginReturnDTO;
         }
@@ -334,6 +335,125 @@ namespace Toy_Store_Management_Backend.Mapper
                 StatusActionDateTime = orderItem.StatusActionDateTime
             };
             return updateOrderItemStatusReturnDTO;
+        }
+
+        public async Task<CancelOrderItemReturnDTO> OrderItemToCancelOrderItemReturnDTO(OrderItem orderItem)
+        {
+            CancelOrderItemReturnDTO cancelOrderItemReturnDTO = new CancelOrderItemReturnDTO()
+            {
+                OrderItemId = orderItem.Id,
+                OrderId = orderItem.OrderId,
+                OrderItemStatus = orderItem.OrderStatus,
+                ToyId = orderItem.ToyId,
+                Price = orderItem.Price,
+                Quantity = orderItem.Quantity,
+                StatusActionDateTime = orderItem.StatusActionDateTime
+            };
+            return cancelOrderItemReturnDTO;
+        }
+
+        public async Task<List<OrderItemReturnDTO>> OrderItemListToOrderItemReturnDTOList(List<OrderItem> orderItemList)
+        {
+            List<OrderItemReturnDTO> orderItemReturnDTOList = new List<OrderItemReturnDTO>();
+            foreach(var orderItem in orderItemList)
+            {
+                OrderItemReturnDTO orderItemReturnDTO = new OrderItemReturnDTO()
+                {
+                    OrderItemId = orderItem.Id,
+                    OrderId = orderItem.OrderId,
+                    OrderItemStatus = orderItem.OrderStatus,
+                    ToyId = orderItem.ToyId,
+                    Price = orderItem.Price,
+                    Quantity = orderItem.Quantity,
+                    StatusActionDateTime = orderItem.StatusActionDateTime
+                };
+                orderItemReturnDTOList.Add(orderItemReturnDTO);
+            }
+            return orderItemReturnDTOList;
+        }
+
+        public async Task<Review> AddReviewDtoToReview(AddReviewDTO addReviewDTO)
+        {
+            Review review = new Review()
+            {
+                UserId = addReviewDTO.UserId,
+                ToyId = addReviewDTO.ToyId,
+                Ratings = addReviewDTO.Ratings,
+                ReviewText = addReviewDTO.ReviewText
+            };
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo istTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+            DateTime istNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, istTimeZone);
+            review.ReviewDateTime = istNow;
+            return review;
+
+        }
+
+        public async Task<AddReviewReturnDTO> ReviewToAddReviewReturnDTO(Review review)
+        {
+            AddReviewReturnDTO addReviewReturnDTO = new AddReviewReturnDTO()
+            {
+                ReviewId = review.Id,
+                ReviewText = review.ReviewText,
+                ToyId = review.ToyId,
+                UserId = review.UserId,
+                Ratings = review.Ratings,
+                ReviewDateTime = review.ReviewDateTime,
+
+            };
+            return addReviewReturnDTO;
+        }
+
+        public async Task<List<ReviewReturnDTO>> ReviewListToReviewReturnDtoList(List<Review> reviewList)
+        {
+            List<ReviewReturnDTO>  reviewReturnDTOList = new List<ReviewReturnDTO>();
+
+            foreach(var review in reviewList)
+            {
+                ReviewReturnDTO reviewReturnDTO = new ReviewReturnDTO()
+                {
+                    ReviewId = review.Id,
+                    ReviewText = review.ReviewText,
+                    ToyId = review.ToyId,
+                    UserId = review.UserId,
+                    Ratings = review.Ratings,
+                    ReviewDateTime = review.ReviewDateTime,
+                };
+                reviewReturnDTOList.Add(reviewReturnDTO);
+            }
+            return reviewReturnDTOList;
+        }
+
+        public async Task<List<CategoryReturnDTO>> CategoryListToCategoryReturnDTOList(List<Category> categoryList)
+        {
+            List<CategoryReturnDTO> categoryReturnDTOList = new List<CategoryReturnDTO>();
+            foreach (var category in categoryList)
+            {
+                CategoryReturnDTO categoryReturnDTO = new CategoryReturnDTO()
+                {
+                    CategoryId = category.Id,
+                    CategoryName = category.Name,
+                    ImageUrl = category.ImageUrl,
+                };
+                categoryReturnDTOList.Add(categoryReturnDTO);
+            }
+            return categoryReturnDTOList;
+        }
+
+        public async Task<List<BrandReturnDTO>> BrandListToBrandReturnDTOList(List<Brand> brandList)
+        {
+            List<BrandReturnDTO> brandReturnDTOList = new List<BrandReturnDTO>();
+            foreach(var brand in brandList)
+            {
+                BrandReturnDTO brandReturnDTO = new BrandReturnDTO()
+                {
+                    BrandId = brand.Id,
+                    BrandName = brand.Name,
+                    ImageUrl = brand.ImageUrl,
+                };
+                brandReturnDTOList.Add(brandReturnDTO);
+            }
+            return brandReturnDTOList;
         }
     }
 }

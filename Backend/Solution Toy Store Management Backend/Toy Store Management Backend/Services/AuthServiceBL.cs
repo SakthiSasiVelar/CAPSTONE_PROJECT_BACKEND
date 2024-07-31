@@ -71,8 +71,8 @@ namespace Toy_Store_Management_Backend.Services
                 bool isValidPassword = await IsValidPassword(userAuthDetails, loginDTO.Password);
                 if (isValidPassword)
                 {
-                    var token = await _tokenService.GenerateToken(userAuthDetails);
                     var user = await _userRepository.GetById(userAuthDetails.UserId);
+                    var token = await _tokenService.GenerateToken(userAuthDetails , user );
                     return await new DTOMapper().UserAuthDetailstoLoginReturnDTO(userAuthDetails, token , user.Name);
                 }
                 throw new InvalidEmailPasswordException();

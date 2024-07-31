@@ -193,6 +193,21 @@ namespace Toy_Store_Management_Backend.Services
             }
         }
 
-        
+        public async Task<AddToyReturnDTO> GetToyDetailsById(int id)
+        {
+            try
+            {
+                var toyDetails = await _toyRepository.GetById(id);
+                return await new DTOMapper().ToyToAddToyReturnDTO(toyDetails);
+            }
+            catch (ToyNotFoundException)
+            {
+                throw;
+            }
+            catch( Exception ex)
+            {
+                throw new ToyNotGetException(id);
+            }
+        }
     }
 }

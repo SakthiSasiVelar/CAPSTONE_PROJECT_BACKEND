@@ -15,5 +15,7 @@ namespace Toy_Store_Management_Backend.Interface
         public Task<List<ToyFilterReturnDTO>> FilterByArrivalDate();
 
         public Task<List<ToyFilterReturnDTO>> FilterByMultipleValues(ToyMultipleFilterDTO toyMultipleFilterDTO);
+
+        public Task<AddToyReturnDTO> GetToyDetailsById(int id);
     }
 }

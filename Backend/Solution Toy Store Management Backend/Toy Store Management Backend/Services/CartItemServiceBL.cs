@@ -9,11 +9,13 @@ namespace Toy_Store_Management_Backend.Services
 {
     public class CartItemServiceBL : ICartItemService
     {
-        private readonly IRepository<int, CartItem> _cartItemRepository;
+        private readonly ICartItemRepository<int, CartItem> _cartItemRepository;
+        private readonly IRepository<int, Toy> _toyRepository;
 
-        public CartItemServiceBL(IRepository<int, CartItem> cartItemRepository)
+        public CartItemServiceBL(ICartItemRepository<int, CartItem> cartItemRepository , IRepository<int,Toy> toyRepository)
         {
             _cartItemRepository = cartItemRepository;
+            _toyRepository = toyRepository;
         }
 
         public async Task<AddCartItemReturnDTO> AddCartItem(AddCartItemDTO addCartItemDTO)
@@ -47,6 +49,19 @@ namespace Toy_Store_Management_Backend.Services
             }
         }
 
+        public async Task<List<CartItemReturnDTO>> DeleteCartItemByIdList(List<int> cartItemIdList)
+        {
+            try
+            {
+                var resut = await _cartItemRepository.DeleteByListId(cartItemIdList);
+                return await new DTOMapper().CartItemListToCartItemReturnDTOList(resut.ToList());
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error in deleting the car items ");
+            }
+        }
+
         public async Task<List<CartItemReturnDTO>> GetCartItemListByUserId(int userId)
         {
             try
@@ -67,8 +82,21 @@ namespace Toy_Store_Management_Backend.Services
             try
             {
                 var cartItem = await new DTOMapper().UpdateCartItemDtoToCartItem(updateCartItemDTO);
+                var oldCartItem = await _cartItemRepository.GetById(cartItem.Id);
+                if(oldCartItem.Quantity < cartItem.Quantity)
+                {
+                    var toy = await _toyRepository.GetById(cartItem.ToyId);
+                    if(toy.Quantity < cartItem.Quantity)
+                    {
+                        throw new QuantityMoreThanStockException();
+                    }
+                }
                 var result = await _cartItemRepository.Update(cartItem);
                 return await new DTOMapper().CartItemToUpdateCartItemReturnDTO(result);
+            }
+            catch (QuantityMoreThanStockException)
+            {
+                throw;
             }
             catch (CartItemNotFoundException)
             {

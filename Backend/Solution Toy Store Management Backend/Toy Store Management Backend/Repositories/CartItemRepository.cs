@@ -6,7 +6,7 @@ using Toy_Store_Management_Backend.Models;
 
 namespace Toy_Store_Management_Backend.Repositories
 {
-    public class CartItemRepository : IRepository<int, CartItem>
+    public class CartItemRepository : ICartItemRepository<int, CartItem>
     {
         private readonly ToyStoreManagementDbContext _dbContext;
 
@@ -44,6 +44,21 @@ namespace Toy_Store_Management_Backend.Repositories
             catch(Exception ex)
             {
                 throw new CartItemsNotDeleteException();
+            }
+        }
+
+        public async Task<List<CartItem>> DeleteByListId(List<int> id)
+        {
+            try
+            {
+                var cartItems = await _dbContext.CartItems.Where(ci => id.Contains(ci.Id)).ToListAsync();
+                _dbContext.CartItems.RemoveRange(cartItems);
+                await _dbContext.SaveChangesAsync();
+                return cartItems;
+            }
+            catch (Exception ex)
+            {
+                 throw new CartItemsNotDeleteException();
             }
         }
 

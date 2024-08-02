@@ -1,11 +1,10 @@
 ﻿namespace Toy_Store_Management_Backend.DTOs
 {
-    public class CartItemReturnDTO
+    public class CartItemDTO
     {
-        public int CartItemId { get; set; }
-
         public int ToyId { get; set; }
 
         public int Quantity { get; set; }
+
     }
 }

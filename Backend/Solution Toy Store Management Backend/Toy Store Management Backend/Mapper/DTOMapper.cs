@@ -233,7 +233,6 @@ namespace Toy_Store_Management_Backend.Mapper
                 CartItemReturnDTO cartItemReturnDTO = new CartItemReturnDTO()
                 {
                     CartItemId = cartItem.Id,
-                    UserId = cartItem.UserId,
                     ToyId = cartItem.ToyId,
                     Quantity = cartItem.Quantity,
                 };
@@ -290,11 +289,11 @@ namespace Toy_Store_Management_Backend.Mapper
             return addOrderReturnDTO;
         }
 
-        public async Task<OrderItem> AddOrderItemDtoToOrderItem(AddOrderItemDTO addOrderItemDTO)
+        public async Task<OrderItem> AddOrderItemDtoToOrderItem(AddOrderItemDTO addOrderItemDTO, int orderId)
         {
             OrderItem orderItem = new OrderItem()
             {
-                OrderId = addOrderItemDTO.OrderId,
+                OrderId = orderId,
                 ToyId = addOrderItemDTO.ToyId,
                 Quantity = addOrderItemDTO.Quantity,
                 Price = addOrderItemDTO.Price,
@@ -307,6 +306,16 @@ namespace Toy_Store_Management_Backend.Mapper
             return orderItem;
         }
 
+        public async Task<List<OrderItem>> AddOrderItemListToOrderItemList(List<AddOrderItemDTO> addOrderItemListDTO , int orderId)
+        {
+            List<OrderItem> orderItemList = new List<OrderItem>();
+            foreach(var orderItemDTO  in addOrderItemListDTO)
+            {
+                orderItemList.Add(await AddOrderItemDtoToOrderItem(orderItemDTO , orderId));
+            }
+            return orderItemList;
+        }
+
         public async Task<AddOrderItemReturnDTO> OrderItemToAddOrderItemReturnDto(OrderItem orderItem)
         {
             AddOrderItemReturnDTO addOrderItemReturnDTO = new AddOrderItemReturnDTO()
@@ -316,10 +325,30 @@ namespace Toy_Store_Management_Backend.Mapper
                 ToyId = orderItem.ToyId,
                 Price = orderItem.Price,
                 Quantity = orderItem.Quantity,
-                OrderStatus = orderItem.OrderStatus,
+                OrderStatus = orderItem.OrderStatus,            
                 StatusActionDateTime = orderItem.StatusActionDateTime
             };
             return addOrderItemReturnDTO;
+        }
+
+        public async Task<PlaceOrderReturnDTO> OrderItemToPlaceOrderItemDTO(Order order , List<OrderItem> orderItemList)
+        {
+            PlaceOrderReturnDTO placeOrderReturnDTO = new PlaceOrderReturnDTO()
+            {
+                OrderDetails = await OrderToAddOrderReturnDto(order),
+                OrderItemList = await OrderItemListToAddOrderItemReturnDTOList(orderItemList)
+            };
+            return placeOrderReturnDTO;
+        }
+
+        public async Task<List<AddOrderItemReturnDTO>> OrderItemListToAddOrderItemReturnDTOList(List<OrderItem> orderItem)
+        {
+            List<AddOrderItemReturnDTO> orderItemList = new List<AddOrderItemReturnDTO>();
+            foreach (var item in orderItem)
+            {
+                orderItemList.Add(await OrderItemToAddOrderItemReturnDto(item));
+            }
+            return orderItemList;
         }
 
         public async Task<UpdateOrderItemStatusReturnDTO> OrderItemToUpdateOrderItemStatusReturnDTO(OrderItem orderItem)

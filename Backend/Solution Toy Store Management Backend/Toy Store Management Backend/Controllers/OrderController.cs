@@ -16,14 +16,14 @@ namespace Toy_Store_Management_Backend.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost("order/add")]
+        [HttpPost("order/placeOrder")]
 
-        public async Task<ActionResult<AddOrderReturnDTO>> Add([FromBody] AddOrderDTO addOrderDTO)
+        public async Task<ActionResult<PlaceOrderReturnDTO>> OrderPlace([FromBody] PlaceOrderDTO placeOrderDTO)
         {
             try
             {
-                var result = await _orderService.AddOrder(addOrderDTO);
-                var response = new SuccessResponseModel<AddOrderReturnDTO>(201, "order details added successfully", result);
+                var result = await _orderService.PlaceOrder(placeOrderDTO);
+                var response = new SuccessResponseModel<PlaceOrderReturnDTO>(201, "order placed successfully", result);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -31,5 +31,7 @@ namespace Toy_Store_Management_Backend.Controllers
                 return StatusCode(500, new ErrorModel(500, ex.Message));
             }
         }
+
+        
     }
 }

@@ -15,7 +15,5 @@
         public ICollection<Order> Orders { get; set; }
 
         public ICollection<CartItem> CartItems { get; set; }
-
-        public ICollection<Payment> Payments { get; set; }
     }
 }

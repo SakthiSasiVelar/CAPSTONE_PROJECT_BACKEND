@@ -135,5 +135,54 @@ namespace Toy_Store_Management_Backend.Controllers
                 return StatusCode(500, new ErrorModel(500, ex.Message));
             }
         }
+
+        [HttpPost("toy/getList")]
+
+        public async Task<ActionResult<List<ToyFilterReturnDTO>>> ToyIdListToToy([FromBody] GetToyDetailListByToyIdDTO getToyDetailByIdDTO)
+        {
+            try
+            {
+                var result = await _toyService.GetToyDetailListByToyId(getToyDetailByIdDTO);
+                var response = new SuccessResponseModel<List<ToyFilterReturnDTO>>(200, "Toy List fetched successfully", result);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
+        [HttpPost("toy/checkQuantity")]
+
+        public async Task<ActionResult<QuantityCheckReturnDTO>> QuantityCheckForCartItem([FromBody] List<CartItemDTO> cartItemDTOs)
+        {
+            try
+            {
+                var result = await _toyService.QuantityCheck(cartItemDTOs);
+                var response = new SuccessResponseModel<QuantityCheckReturnDTO>(200, "exceeded quantity toys returned successfully", result);
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
+        [HttpPut("toy/updateQuantity")]
+
+        public async Task<ActionResult<List<ToyFilterReturnDTO>>> QuantityUpdate([FromBody] List<CartItemDTO> cartItemDTOs)
+        {
+            try
+            {
+                var result = await _toyService.UpdateQuantity(cartItemDTOs);
+                var response = new SuccessResponseModel<List<ToyFilterReturnDTO>>(200, "Toy quantity updated successfully", result);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
     }
 }

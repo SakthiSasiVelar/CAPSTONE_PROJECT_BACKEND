@@ -1,4 +1,5 @@
-﻿using Toy_Store_Management_Backend.DTOs;
+﻿using System.Security.Cryptography.Xml;
+using Toy_Store_Management_Backend.DTOs;
 using Toy_Store_Management_Backend.Exceptions;
 using Toy_Store_Management_Backend.Interface;
 using Toy_Store_Management_Backend.Mapper;
@@ -207,6 +208,80 @@ namespace Toy_Store_Management_Backend.Services
             catch( Exception ex)
             {
                 throw new ToyNotGetException(id);
+            }
+        }
+
+        public async Task<List<ToyFilterReturnDTO>> GetToyDetailListByToyId(GetToyDetailListByToyIdDTO getToyDetailByIdDTO)
+        {
+            try
+            {
+                var toyList = await _toyRepository.GetAll();
+                var filteredList = toyList.Where(toy => getToyDetailByIdDTO.ToyIdList.Contains(toy.Id)).ToList();
+                return await new DTOMapper().ToyListToToyFilterReturnDTOList(filteredList);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("error in getting toy details List");
+            }
+        }
+
+        public async Task<QuantityCheckReturnDTO> QuantityCheck(List<CartItemDTO> cartItemDTOs)
+        {
+            try
+            {
+                var cartItemToyIds = cartItemDTOs.Select(ci => ci.ToyId).ToList();
+                var toyList = await _toyRepository.GetAll();
+                var requiredToys = toyList.Where(toy => cartItemToyIds.Contains(toy.Id)).ToList();
+
+                List<int> exceedQuantityToyIdList = new List<int>();
+
+                foreach(var cartItem in cartItemDTOs)
+                {
+                    var toy = requiredToys.FirstOrDefault(t => t.Id == cartItem.ToyId);
+                    if(toy != null && cartItem.Quantity > toy.Quantity)
+                    {
+                        exceedQuantityToyIdList.Add(toy.Id);
+                    }
+                    
+                }
+                QuantityCheckReturnDTO quantityCheckReturnDTO = new QuantityCheckReturnDTO()
+                {
+                    MoreQuantityToyIdList = exceedQuantityToyIdList,
+                };
+                return quantityCheckReturnDTO;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error in validating cart item quantity");
+            }
+        }
+
+        public async Task<List<ToyFilterReturnDTO>> UpdateQuantity(List<CartItemDTO> cartItemDTOs)
+        {
+            try
+            {
+                var cartItemToyIds = cartItemDTOs.Select(ci => ci.ToyId).ToList();
+                var toyList = await _toyRepository.GetAll();
+                var requiredToys = toyList.Where(toy => cartItemToyIds.Contains(toy.Id)).ToList();
+
+                List<Toy> updatedToyList = new List<Toy>();
+
+                foreach (var cartItem in cartItemDTOs)
+                {
+                    var toy = requiredToys.FirstOrDefault(t => t.Id == cartItem.ToyId);
+                     if(toy != null)
+                    {
+                        toy.Quantity -= cartItem.Quantity;
+                        var updatedToy = await _toyRepository.Update(toy);
+                        updatedToyList.Add(updatedToy);
+                    }
+
+                }       
+                return await new DTOMapper().ToyListToToyFilterReturnDTOList(updatedToyList);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in updating cart item quantity");
             }
         }
     }

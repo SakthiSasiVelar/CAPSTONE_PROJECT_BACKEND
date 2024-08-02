@@ -47,6 +47,10 @@ namespace Toy_Store_Management_Backend.Controllers
             {
                 return NotFound(new ErrorModel(404, ex.Message));
             }
+            catch(QuantityMoreThanStockException ex)
+            {
+                return StatusCode(603 , new ErrorModel(603 , ex.Message));
+            }
             catch (Exception ex)
             {
                 return StatusCode(500, new ErrorModel(500, ex.Message));
@@ -85,6 +89,22 @@ namespace Toy_Store_Management_Backend.Controllers
             }
             catch (Exception ex)
             {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
+        [HttpDelete("cartItem/deleteList")]
+
+        public async Task<ActionResult<List<CartItemReturnDTO>>> DeleteCartByList([FromBody] List<int> cartItemIdList)
+        {
+            try
+            {
+                var result = await _cartItemService.DeleteCartItemByIdList(cartItemIdList);
+                var response = new SuccessResponseModel<List<CartItemReturnDTO>>(200, "Cart items deleted successsfully", result);
+                return Ok(response);
+
+            }
+            catch(Exception ex) {
                 return StatusCode(500, new ErrorModel(500, ex.Message));
             }
         }

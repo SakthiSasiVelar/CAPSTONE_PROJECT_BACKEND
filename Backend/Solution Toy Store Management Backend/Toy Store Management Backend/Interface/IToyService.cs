@@ -17,5 +17,11 @@ namespace Toy_Store_Management_Backend.Interface
         public Task<List<ToyFilterReturnDTO>> FilterByMultipleValues(ToyMultipleFilterDTO toyMultipleFilterDTO);
 
         public Task<AddToyReturnDTO> GetToyDetailsById(int id);
+
+        public Task<List<ToyFilterReturnDTO>> GetToyDetailListByToyId(GetToyDetailListByToyIdDTO getToyDetailByIdDTO);
+
+        public Task<QuantityCheckReturnDTO> QuantityCheck(List<CartItemDTO> cartItemDTOs);
+
+        public Task<List<ToyFilterReturnDTO>> UpdateQuantity(List<CartItemDTO> cartItemDTOs);
     }
 }

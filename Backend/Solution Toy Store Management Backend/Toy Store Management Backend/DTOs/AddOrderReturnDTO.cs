@@ -20,7 +20,7 @@ namespace Toy_Store_Management_Backend.DTOs
 
         public string DeliveryCharge { get; set; }
 
-        public int? SuccessFulPaymentId { get; set; }
+        public string? SuccessFulPaymentId { get; set; }
 
         public DateTime OrderDateTime { get; set; }
     }

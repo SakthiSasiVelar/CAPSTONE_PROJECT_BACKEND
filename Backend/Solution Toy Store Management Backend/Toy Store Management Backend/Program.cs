@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Stripe;
 using System.Text;
 using Toy_Store_Management_Backend.Context;
 using Toy_Store_Management_Backend.Interface;
@@ -18,6 +19,7 @@ namespace Toy_Store_Management_Backend
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -73,12 +75,12 @@ namespace Toy_Store_Management_Backend
             builder.Services.AddScoped<IRepository<int, Brand>, BrandRepository>();
             builder.Services.AddScoped<IRepository<int, Category>, CategoryRepository>();
             builder.Services.AddScoped<IRepository<int, Toy> , ToyRepository> ();
-            builder.Services.AddScoped<IRepository<int,CartItem> , CartItemRepository>();
+            builder.Services.AddScoped<ICartItemRepository<int,CartItem> , CartItemRepository>();
             builder.Services.AddScoped<UserOrderRepository ,  UserOrderRepository>();
             builder.Services.AddScoped<IRepository<int,Order> , OrderRepository>();
-            builder.Services.AddScoped<IRepository<int,Coupon>, CouponRepository>();
-            builder.Services.AddScoped<IRepository<int,OrderItem> , OrderItemRepository>();
-            builder.Services.AddScoped<IRepository<int,Review>, ReviewRepository>();
+            builder.Services.AddScoped<IRepository<int, Toy_Store_Management_Backend.Models.Coupon>, CouponRepository>();
+            builder.Services.AddScoped<IOrderItemRepository<int,OrderItem> , OrderItemRepository>();
+            builder.Services.AddScoped<IRepository<int, Toy_Store_Management_Backend.Models.Review>, ReviewRepository>();
             builder.Services.AddScoped<ToyReviewRepository ,  ToyReviewRepository>();
 
             #endregion

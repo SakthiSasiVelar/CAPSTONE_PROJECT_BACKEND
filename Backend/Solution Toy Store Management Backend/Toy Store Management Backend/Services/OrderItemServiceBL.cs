@@ -1,4 +1,5 @@
-﻿using Toy_Store_Management_Backend.DTOs;
+﻿using Toy_Store_Management_Backend.Context;
+using Toy_Store_Management_Backend.DTOs;
 using Toy_Store_Management_Backend.Enums;
 using Toy_Store_Management_Backend.Exceptions;
 using Toy_Store_Management_Backend.Interface;
@@ -9,25 +10,11 @@ namespace Toy_Store_Management_Backend.Services
 {
     public class OrderItemServiceBL : IOrderItemService
     {
-        private readonly IRepository<int,OrderItem> _orderItemRepository;
+        private readonly IOrderItemRepository<int,OrderItem> _orderItemRepository;
 
-        public OrderItemServiceBL(IRepository<int, OrderItem> orderItemRepository)
+        public OrderItemServiceBL(IOrderItemRepository<int, OrderItem> orderItemRepository)
         {
             _orderItemRepository = orderItemRepository;
-        }
-
-        public async Task<AddOrderItemReturnDTO> AddOrderItem(AddOrderItemDTO addOrderItemDTO)
-        {
-            try
-            {
-                var orderItem = await new DTOMapper().AddOrderItemDtoToOrderItem(addOrderItemDTO);
-                var result = await _orderItemRepository.Add(orderItem);
-                return await new DTOMapper().OrderItemToAddOrderItemReturnDto(orderItem);
-            }
-            catch(Exception ex)
-            {
-                throw new OrderItemNotAddException();
-            }
         }
 
         public async Task<UpdateOrderItemStatusReturnDTO> UpdateOrderItemStatus(UpdateOrderItemStatusDTO updateOrderItemStatusDTO)
@@ -106,5 +93,6 @@ namespace Toy_Store_Management_Backend.Services
                 throw new Exception($"error in getting {status} order Item list");
             }
         }
+
     }
 }

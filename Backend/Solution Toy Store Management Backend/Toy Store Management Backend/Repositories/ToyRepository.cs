@@ -63,9 +63,25 @@ namespace Toy_Store_Management_Backend.Repositories
             }
         }
 
-        public Task<Toy> Update(Toy entity)
+        public async  Task<Toy> Update(Toy entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingCartItem = await GetById(entity.Id);
+                _dbContext.Entry(existingCartItem).State = EntityState.Detached;
+                _dbContext.Attach(entity);
+                _dbContext.Entry(entity).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+                return entity;
+            }
+            catch (ToyNotFoundException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("error in updating Toy");
+            }
         }
     }
 }

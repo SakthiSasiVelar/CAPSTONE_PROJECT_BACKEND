@@ -17,21 +17,6 @@ namespace Toy_Store_Management_Backend.Controllers
             _orderItemService = orderItemService;
         }
 
-        [HttpPost("orderItem/add")]
-
-        public async Task<ActionResult<AddOrderItemReturnDTO>> Add([FromBody]AddOrderItemDTO addOrderItemDTO)
-        {
-            try
-            {
-                var result = await _orderItemService.AddOrderItem(addOrderItemDTO);
-                var response = new SuccessResponseModel<AddOrderItemReturnDTO>(201, "orderItem created successfully", result);
-                return Ok(response);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, new ErrorModel(500, ex.Message));
-            }
-        }
 
         [HttpPut("orderItem/updateStatus")]
 

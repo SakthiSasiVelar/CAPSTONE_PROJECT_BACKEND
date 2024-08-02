@@ -6,7 +6,7 @@ using Toy_Store_Management_Backend.Models;
 
 namespace Toy_Store_Management_Backend.Repositories
 {
-    public class OrderItemRepository : IRepository<int, OrderItem>
+    public class OrderItemRepository : IOrderItemRepository<int, OrderItem>
     {
         public readonly ToyStoreManagementDbContext _context;
 
@@ -15,11 +15,11 @@ namespace Toy_Store_Management_Backend.Repositories
             _context = context;
         }
 
-        public async Task<OrderItem> Add(OrderItem entity)
+        public async Task<List<OrderItem>> AddRange(List<OrderItem> entity)
         {
             try
             {
-                _context.OrderItems.Add(entity);
+                _context.OrderItems.AddRange(entity);
                 await _context.SaveChangesAsync();
                 return entity;
             }

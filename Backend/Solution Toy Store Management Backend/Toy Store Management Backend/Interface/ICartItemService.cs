@@ -11,5 +11,7 @@ namespace Toy_Store_Management_Backend.Interface
         public Task<DeleteCartItemReturnDTO> DeleteCartItem(int cartItemId);
 
         public Task<List<CartItemReturnDTO>> GetCartItemListByUserId(int userId);
+
+        public Task<List<CartItemReturnDTO>> DeleteCartItemByIdList(List<int> cartItemIdList); 
     }
 }

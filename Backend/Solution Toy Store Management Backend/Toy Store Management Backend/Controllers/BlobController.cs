@@ -21,7 +21,7 @@ namespace Toy_Store_Management_Backend.Controllers
         {
             try
             {
-                if(uploadImageDTO.ImageFile == null || uploadImageDTO.ImageFile.Length == 0)
+                if(uploadImageDTO.File == null || uploadImageDTO.File.Length == 0)
                 {
                     return BadRequest(new ErrorModel(400, "No file uploaded"));
                 }

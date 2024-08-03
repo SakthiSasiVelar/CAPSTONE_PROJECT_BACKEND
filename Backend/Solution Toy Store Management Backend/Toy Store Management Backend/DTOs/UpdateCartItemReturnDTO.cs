@@ -9,5 +9,7 @@
         public int UserId { get; set; }
 
         public int Quantity { get; set; }
+
+        public bool IsQuantityExceed {  get; set; }
     }
 }

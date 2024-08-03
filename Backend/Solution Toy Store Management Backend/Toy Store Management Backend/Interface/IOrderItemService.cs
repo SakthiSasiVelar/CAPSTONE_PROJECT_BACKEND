@@ -8,9 +8,11 @@ namespace Toy_Store_Management_Backend.Interface
 
         public Task<CancelOrderItemReturnDTO> CancelOrderItem(CancelOrderItemDTO cancelOrderItemDTO);
 
-        public Task<List<OrderItemReturnDTO>> GetAllOrderItems();
+        public Task<List<OrderItemReturnDTO>> GetAllOrderItems(int userId);
 
         public Task<List<OrderItemReturnDTO>> FilterByStatus(string status);
+
+        public Task<OrderItemReturnDTO> GetCartItemById (int id);
 
     }
 }

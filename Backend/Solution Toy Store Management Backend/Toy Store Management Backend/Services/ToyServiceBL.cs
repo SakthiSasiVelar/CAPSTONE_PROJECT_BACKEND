@@ -284,5 +284,46 @@ namespace Toy_Store_Management_Backend.Services
                 throw new Exception("Error in updating cart item quantity");
             }
         }
+
+        public async Task<List<ToyFilterReturnDTO>> GetAllToyList()
+        {
+            try
+            {
+                var result = await _toyRepository.GetAll();
+                var sortedToys = result.OrderByDescending(t => t.ArrivalDate).ToList();
+                return await new DTOMapper().ToyListToToyFilterReturnDTOList(sortedToys.ToList());
+            }
+            catch(Exception ex)
+            {
+                throw new ToyListNotFoundException();
+            }
+        }
+
+        public async Task<AddToyReturnDTO> UpdateToy(UpdateToyDTO updateToyDTO)
+        {
+            try
+            {
+                Toy toy = new Toy()
+                {
+                    Id = updateToyDTO.ToyId,
+                    Name = updateToyDTO.Name,
+                    Description = updateToyDTO.Description,
+                    AgeRange = updateToyDTO.AgeRange,
+                    CategoryId = updateToyDTO.CategoryId,
+                    BrandId = updateToyDTO.BrandId,
+                    ArrivalDate = updateToyDTO.ArrivalDateTime,
+                    ImageUrl = updateToyDTO.ImageUrl,
+                    Price = updateToyDTO.Price,
+                    Discount = updateToyDTO.Discount,
+                    Quantity = updateToyDTO.Quantity,
+                };
+                var result = await _toyRepository.Update(toy);
+                return await new DTOMapper().ToyToAddToyReturnDTO(result);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

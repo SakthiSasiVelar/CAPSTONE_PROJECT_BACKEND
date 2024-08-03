@@ -81,6 +81,7 @@ namespace Toy_Store_Management_Backend.Services
         {
             try
             {
+                bool isQuantityExceed = false;
                 var cartItem = await new DTOMapper().UpdateCartItemDtoToCartItem(updateCartItemDTO);
                 var oldCartItem = await _cartItemRepository.GetById(cartItem.Id);
                 if(oldCartItem.Quantity < cartItem.Quantity)
@@ -88,11 +89,20 @@ namespace Toy_Store_Management_Backend.Services
                     var toy = await _toyRepository.GetById(cartItem.ToyId);
                     if(toy.Quantity < cartItem.Quantity)
                     {
+                        isQuantityExceed = true;
                         throw new QuantityMoreThanStockException();
                     }
                 }
+                else if(oldCartItem.Quantity > cartItem.Quantity)
+                {
+                    var toy = await _toyRepository.GetById(cartItem.ToyId);
+                    if (toy.Quantity < cartItem.Quantity)
+                    {
+                        isQuantityExceed = true;
+                    }
+                }
                 var result = await _cartItemRepository.Update(cartItem);
-                return await new DTOMapper().CartItemToUpdateCartItemReturnDTO(result);
+                return await new DTOMapper().CartItemToUpdateCartItemReturnDTO(result , isQuantityExceed);
             }
             catch (QuantityMoreThanStockException)
             {

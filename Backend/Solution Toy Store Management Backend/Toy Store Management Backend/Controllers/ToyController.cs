@@ -184,5 +184,37 @@ namespace Toy_Store_Management_Backend.Controllers
             }
         }
 
+        [HttpGet("toy/getAll")]
+
+        public async Task<ActionResult<List<ToyFilterReturnDTO>>> GetAllToys()
+        {
+            try
+            {
+                var result = await _toyService.GetAllToyList();
+                var response = new SuccessResponseModel<List<ToyFilterReturnDTO>>(200, "Toy List fetched successfully", result);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
+        [HttpPut("toy/update")]
+
+        public async Task<ActionResult<AddToyReturnDTO>> Update([FromBody]UpdateToyDTO updateToyDTO)
+        {
+            try
+            {
+                var result = await _toyService.UpdateToy(updateToyDTO);
+                var response = new SuccessResponseModel<AddToyReturnDTO>(200, "toy details updated successfully", result);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Toy_Store_Management_Backend.DTOs;
+using Toy_Store_Management_Backend.Exceptions;
 using Toy_Store_Management_Backend.Interface;
 
 namespace Toy_Store_Management_Backend.Controllers
@@ -32,6 +33,26 @@ namespace Toy_Store_Management_Backend.Controllers
             }
         }
 
+
+        [HttpGet("order/get/{orderId}")]
+
+        public async Task<ActionResult<OrderReturnDTO>> GetOrder(int orderId)
+        {
+            try
+            {
+                var result = await _orderService.GetOrderById(orderId);
+                var response = new SuccessResponseModel<OrderReturnDTO>(200, "order fetched successfully", result);
+                return Ok(response);
+            }
+            catch(OrderNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(404, ex.Message));
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
         
     }
 }

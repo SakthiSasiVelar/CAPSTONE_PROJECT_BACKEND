@@ -18,6 +18,23 @@ namespace Toy_Store_Management_Backend.Services
             _orderItemRepository = orderItemRepository;
         }
 
+        public async Task<OrderReturnDTO> GetOrderById(int id)
+        {
+            try
+            {
+                var result = await _orderRepository.GetById(id);
+                return await new DTOMapper().OrderToOrderReturnDTO(result);
+            }
+            catch (OrderNotFoundException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                throw new OrderNotGetException(id);
+            }
+        }
+
         public async  Task<PlaceOrderReturnDTO> PlaceOrder(PlaceOrderDTO placeOrderDTO)
         {
             try

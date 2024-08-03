@@ -24,6 +24,7 @@ namespace Toy_Store_Management_Backend.Controllers
         {
             try
             {
+               
                 var result = await _orderItemService.UpdateOrderItemStatus(updateOrderItemStatusDTO);
                 var response = new SuccessResponseModel<UpdateOrderItemStatusReturnDTO>(200, "order item status updated successfully", result);
                 return Ok(response);
@@ -59,13 +60,13 @@ namespace Toy_Store_Management_Backend.Controllers
 
         }
 
-        [HttpGet("orderItem/getAll")]
+        [HttpGet("orderItem/getAll/{userId}")]
 
-        public async Task<ActionResult<List<OrderItemReturnDTO>>> GetAll()
+        public async Task<ActionResult<List<OrderItemReturnDTO>>> GetAll(int userId)
         {
             try
             {
-                var result = await _orderItemService.GetAllOrderItems();
+                var result = await _orderItemService.GetAllOrderItems(userId);
                 var response = new SuccessResponseModel<List<OrderItemReturnDTO>>(200, "order item list fetched successfully", result);
                 return Ok(response);
             }
@@ -84,6 +85,26 @@ namespace Toy_Store_Management_Backend.Controllers
                 var result = await _orderItemService.FilterByStatus(status);
                 var response = new SuccessResponseModel<List<OrderItemReturnDTO>>(200, $" {status} order item list fetched successfully", result);
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
+        [HttpGet("orderItem/get/{orderItemId}")]
+
+        public async Task<ActionResult<OrderItemReturnDTO>> Get(int orderItemId)
+        {
+            try
+            {
+                var result = await _orderItemService.GetCartItemById(orderItemId);
+                var response = new SuccessResponseModel<OrderItemReturnDTO>(200, " order item  fetched successfully", result);
+                return Ok(response);
+            }
+            catch (OrderNotFoundException ex)
+            {
+                return NotFound(new ErrorModel(404, ex.Message));
             }
             catch (Exception ex)
             {

@@ -12,6 +12,7 @@
         {
            Confirmed,
            Shipped,
+           OutForDelivery,
            Delivered,
            Cancelled
         }

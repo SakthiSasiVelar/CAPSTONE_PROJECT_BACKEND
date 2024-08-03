@@ -23,5 +23,9 @@ namespace Toy_Store_Management_Backend.Interface
         public Task<QuantityCheckReturnDTO> QuantityCheck(List<CartItemDTO> cartItemDTOs);
 
         public Task<List<ToyFilterReturnDTO>> UpdateQuantity(List<CartItemDTO> cartItemDTOs);
+
+        public Task<List<ToyFilterReturnDTO>> GetAllToyList();
+
+        public Task<AddToyReturnDTO> UpdateToy(UpdateToyDTO updateToyDTO);
     }
 }

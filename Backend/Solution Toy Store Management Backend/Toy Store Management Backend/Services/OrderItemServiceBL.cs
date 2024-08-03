@@ -11,10 +11,12 @@ namespace Toy_Store_Management_Backend.Services
     public class OrderItemServiceBL : IOrderItemService
     {
         private readonly IOrderItemRepository<int,OrderItem> _orderItemRepository;
+        private readonly IRepository<int , Order> _orderRepository;
 
-        public OrderItemServiceBL(IOrderItemRepository<int, OrderItem> orderItemRepository)
+        public OrderItemServiceBL(IOrderItemRepository<int, OrderItem> orderItemRepository , IRepository<int, Order> orderRepository)
         {
             _orderItemRepository = orderItemRepository;
+            _orderRepository = orderRepository;
         }
 
         public async Task<UpdateOrderItemStatusReturnDTO> UpdateOrderItemStatus(UpdateOrderItemStatusDTO updateOrderItemStatusDTO)
@@ -65,13 +67,18 @@ namespace Toy_Store_Management_Backend.Services
             return istNow;
         }
 
-        public async Task<List<OrderItemReturnDTO>> GetAllOrderItems()
+        public async Task<List<OrderItemReturnDTO>> GetAllOrderItems(int userId)
         {
             try
             {
-                var result = await _orderItemRepository.GetAll();
-                return await new DTOMapper().OrderItemListToOrderItemReturnDTOList(result.ToList());
-
+                var orderList = await _orderRepository.GetAll();
+                var userOrderList = orderList.Where((order) =>  order.UserId == userId).ToList();
+                var orderItemList = await _orderItemRepository.GetAll();
+                var userOrderItemList = orderItemList
+                    .Where(orderItem => userOrderList.Any(order => order.Id == orderItem.OrderId))
+                    .OrderByDescending(orderItem => userOrderList.First(order => order.Id == orderItem.OrderId).OrderDateTime)
+                    .ToList();
+                return await new DTOMapper().OrderItemListToOrderItemReturnDTOList(userOrderItemList);
             }
             catch (Exception ex)
             {
@@ -94,5 +101,30 @@ namespace Toy_Store_Management_Backend.Services
             }
         }
 
+        public async Task<OrderItemReturnDTO> GetCartItemById(int id)
+        {
+            try
+            {
+                var orderItem = await _orderItemRepository.GetById(id);
+                OrderItemReturnDTO orderItemReturnDTO = new OrderItemReturnDTO() {
+                    OrderId = orderItem.OrderId,
+                    ToyId = orderItem.ToyId,
+                    OrderItemId = orderItem.Id,
+                    Quantity = orderItem.Quantity,
+                    Price = orderItem.Price,
+                    OrderItemStatus = orderItem.OrderStatus,
+                    StatusActionDateTime = orderItem.StatusActionDateTime,
+                };
+                return orderItemReturnDTO;
+            }
+            catch (OrderItemNotFoundException)
+            {
+                throw;
+            }
+            catch(Exception ex)
+            {
+                throw new OrderItemNotGetException(id);
+            }
+        }
     }
 }

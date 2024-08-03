@@ -33,9 +33,16 @@ namespace Toy_Store_Management_Backend.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Order>> GetAll()
+        public async Task<IEnumerable<Order>> GetAll()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _dbContext.Orders.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in getting order list ");
+            }
         }
 
         public async Task<Order> GetById(int id)

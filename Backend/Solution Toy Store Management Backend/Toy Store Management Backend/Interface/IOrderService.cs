@@ -5,5 +5,7 @@ namespace Toy_Store_Management_Backend.Interface
     public interface IOrderService
     {
         public Task<PlaceOrderReturnDTO> PlaceOrder(PlaceOrderDTO placeOrderDTO);
+
+        public Task<OrderReturnDTO> GetOrderById(int id);
     }
 }

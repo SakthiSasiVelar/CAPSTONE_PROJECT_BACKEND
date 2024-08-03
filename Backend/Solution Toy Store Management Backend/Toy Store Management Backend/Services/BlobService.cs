@@ -18,7 +18,7 @@ namespace Toy_Store_Management_Backend.Services
         }
         public async Task<UploadImageReturnDTO> UploadImageToBlob(UploadImageDTO uploadImageDTO)
         {
-            var file = uploadImageDTO.ImageFile;
+            var file = uploadImageDTO.File;
             var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
             await containerClient.CreateIfNotExistsAsync();
 

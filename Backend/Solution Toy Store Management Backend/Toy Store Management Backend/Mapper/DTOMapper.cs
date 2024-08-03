@@ -204,7 +204,7 @@ namespace Toy_Store_Management_Backend.Mapper
             return cartItem;
         }
 
-        public async Task<UpdateCartItemReturnDTO> CartItemToUpdateCartItemReturnDTO(CartItem cartItem)
+        public async Task<UpdateCartItemReturnDTO> CartItemToUpdateCartItemReturnDTO(CartItem cartItem , bool isQuantityExceed)
         {
             UpdateCartItemReturnDTO updateCartItemReturnDTO = new UpdateCartItemReturnDTO()
             {
@@ -212,6 +212,7 @@ namespace Toy_Store_Management_Backend.Mapper
                 UserId = cartItem.UserId,
                 ToyId = cartItem.ToyId,
                 Quantity = cartItem.Quantity,
+                IsQuantityExceed = isQuantityExceed
             };
             return updateCartItemReturnDTO;
         }
@@ -239,6 +240,24 @@ namespace Toy_Store_Management_Backend.Mapper
                 cartItemReturnDTOList.Add(cartItemReturnDTO);
             }
             return cartItemReturnDTOList;
+        }
+
+        public async Task<OrderReturnDTO> OrderToOrderReturnDTO(Order order)
+        {
+            OrderReturnDTO orderReturnDTO = new OrderReturnDTO()
+            {
+                OrderId = order.Id,
+                Name = order.Name,
+                Address = order.Address,
+                ContactNumber = order.ContactNumber,
+                TotalAmount = order.TotalAmount,
+                DeliveryCharge = order.DeliveryCharge,
+                SuccessFulPaymentId = order.SuccessFulPaymentId,
+                OrderDateTime = order.OrderDateTime,
+                Pincode = order.Pincode,
+                UserId = order.UserId,
+            };
+            return orderReturnDTO;
         }
 
         public async Task<CheckCouponCodeReturnDTO> CouponToCheckCouponCodeReturnDTO(Coupon coupon)

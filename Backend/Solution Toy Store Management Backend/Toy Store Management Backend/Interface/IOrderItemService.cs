@@ -14,5 +14,7 @@ namespace Toy_Store_Management_Backend.Interface
 
         public Task<OrderItemReturnDTO> GetCartItemById (int id);
 
+        public Task<List<OrderItemReturnDTO>> GetAllOrderItemsList();
+
     }
 }

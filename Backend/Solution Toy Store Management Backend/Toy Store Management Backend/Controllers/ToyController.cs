@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Toy_Store_Management_Backend.DTOs;
@@ -19,6 +20,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPost("toy/add")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<ActionResult<AddToyReturnDTO>> ToyAdd([FromBody] AddToyDTO addToyDTO)
         {
@@ -153,6 +155,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPost("toy/checkQuantity")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<QuantityCheckReturnDTO>> QuantityCheckForCartItem([FromBody] List<CartItemDTO> cartItemDTOs)
         {
@@ -169,6 +172,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPut("toy/updateQuantity")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<List<ToyFilterReturnDTO>>> QuantityUpdate([FromBody] List<CartItemDTO> cartItemDTOs)
         {
@@ -185,6 +189,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpGet("toy/getAll")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<ActionResult<List<ToyFilterReturnDTO>>> GetAllToys()
         {
@@ -201,6 +206,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPut("toy/update")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<ActionResult<AddToyReturnDTO>> Update([FromBody]UpdateToyDTO updateToyDTO)
         {
@@ -208,6 +214,22 @@ namespace Toy_Store_Management_Backend.Controllers
             {
                 var result = await _toyService.UpdateToy(updateToyDTO);
                 var response = new SuccessResponseModel<AddToyReturnDTO>(200, "toy details updated successfully", result);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
+        [HttpPost("toy/search")]
+
+        public async Task<ActionResult<List<ToyFilterReturnDTO>>> Search([FromBody] SearchDTO searchDTO)
+        {
+            try
+            {
+                var result = await _toyService.SearchToy(searchDTO);
+                var response = new SuccessResponseModel<List<ToyFilterReturnDTO>>(200, "Toy List fetched successfully", result);
                 return Ok(response);
             }
             catch (Exception ex)

@@ -27,5 +27,7 @@ namespace Toy_Store_Management_Backend.Interface
         public Task<List<ToyFilterReturnDTO>> GetAllToyList();
 
         public Task<AddToyReturnDTO> UpdateToy(UpdateToyDTO updateToyDTO);
+
+        public Task<List<ToyFilterReturnDTO>> SearchToy (SearchDTO searchDTO);
     }
 }

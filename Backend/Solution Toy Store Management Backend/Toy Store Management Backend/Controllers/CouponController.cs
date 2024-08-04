@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Toy_Store_Management_Backend.DTOs;
 using Toy_Store_Management_Backend.Exceptions;
@@ -18,6 +19,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPost("coupon/valid/firstOrder")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<CheckCouponCodeReturnDTO>> ValidCoupon([FromBody]CheckCouponCodeDTO checkCouponCodeDTO)
         {

@@ -118,6 +118,33 @@ namespace Toy_Store_Management_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TotalAmount = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Pincode = table.Column<int>(type: "int", nullable: false),
+                    DeliveryCharge = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SuccessFulPaymentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserAuthDetails",
                 columns: table => new
                 {
@@ -214,63 +241,15 @@ namespace Toy_Store_Management_Backend.Migrations
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_OrderItems_Toys_ToyId",
                         column: x => x.ToyId,
                         principalTable: "Toys",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TotalAmount = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Pincode = table.Column<int>(type: "int", nullable: false),
-                    DeliveryCharge = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SuccessFulPaymentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    OrderDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Payments",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StripePaymentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OrderId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Payments_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Payments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -312,11 +291,11 @@ namespace Toy_Store_Management_Backend.Migrations
                 columns: new[] { "Id", "AgeRange", "ArrivalDate", "BrandId", "CategoryId", "Description", "Discount", "ImageUrl", "Name", "Price", "Quantity" },
                 values: new object[,]
                 {
-                    { 6, "7-9years", new DateTime(2024, 8, 2, 20, 4, 15, 389, DateTimeKind.Local).AddTicks(9640), 2, 2, "Elevate your cricket game with the PLAYNXT Yellow Pro Set Cricket Set. This complete premium kit includes a professional bat, stumps, base, bails, and a tennis ball, providing an authentic cricket experience for boys aged 8 years and above. The bat features a rubber grip and curved blade for powerful strokes, while the realistic stumps with durable base and bails add to the immersive gameplay. This cricket set not only enhances motor skills and hand-eye coordination but also fosters decision-making and teamwork. Made from high-quality HDPE plastic, it ensures safety for kids. With its trendy sports bag, this set is easily portable for outdoor play. Take your cricket skills to new heights with PLAYNXT!", "10", "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/491185768/300/491185768-1.webp", "Playnxt Yellow Pro Set Cricket Set Outdoor Sports for Boys age 8Y+", "1700", 2 },
-                    { 7, "3-5years", new DateTime(2024, 8, 2, 20, 4, 15, 389, DateTimeKind.Local).AddTicks(9660), 5, 3, "When young imaginations move into the Barbie Dreamhouse, they turn this amazing dollhouse into a dream home! More than 3 feet tall and 4 feet wide, the Barbie Dreamhouse has so many amazing features - three stories, eight rooms that include a carport (car not included) and a home office, a working elevator that fits four dolls, a pool that has a slide descending from the story above, five pieces of transforming furniture, lights, sounds and more than 60 additional accessories, including an adorable puppy, that can all be used to decorate, set the scene and play out so many stories. Plug-and-play design helps keep pieces in place as small hands move around (and make clean up easy for adult hands!). Decorations and furniture for indoor and outdoor settings inspire play from all angles, and the transformations provide two-in-one fun while encouraging flexible action - the couch turns into bunk beds, the coffee table flips for a bed sized for Chelsea doll (sold separately), the fireplace becomes a home office, the refrigerator turns into an outdoor food stand and the oven houses a barbecue in back. Lights and sounds add even more delightful touches - the oven lights up and the timer ticks, the stovetop sizzles with the frying pan and whistles with the tea kettle and the toilet makes a flushing sound. Young decorators will have so much fun moving accessories around the house as they explore their personal style and tell all kinds of stories, from daytime to nighttime, indoor to outdoor, Barbie home alone or with a house full of friends and family (dolls sold separately). Pool parties, friend sleepovers, sister bonding, backyard BBQs, birthday, holidays and every day there are endless stories to tell and limitless ways to explore living in the Barbie Dreamhouse because with Barbie, anything is possible. Includes Barbie Dreamhouse and 70 accessories that include furniture, household items and a puppy; dolls, fashions and car not included. Colors and decorations may vary.", "10", "https://hmadmin.hamleys.in/product/491232286/300/491636216-2.jpg", "Barbie New Dream House", "22999", 6 },
-                    { 8, "5-7years", new DateTime(2024, 8, 2, 20, 4, 15, 389, DateTimeKind.Local).AddTicks(9663), 2, 2, "Football Size - 5, Durable, Leather Ball, Perfect gift for your loved ones", "10", "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/491489879/300/491489879-1.webp", "Hamleys Star Cross PVC Football for Kids", "899", 1 },
-                    { 9, "12-14years", new DateTime(2024, 8, 2, 20, 4, 15, 389, DateTimeKind.Local).AddTicks(9665), 3, 4, "The Lile Kidz Freedom is Here Kick E Scooter is an exceptional electric scooter tailored for riders aged 10 years and above. Packed with innovative features and boasting a sleek design, this e scooter offers a convenient and eco-friendly mode of transportation. With a 7.5Ah lithium-ion battery, it provides a range of up to 20 km on a single charge. The scooter features an LCD display, LED headlamp, thumb throttle, and 8.5 tires. Its foldable, lightweight, and boasts IPX4 water resistance, making it a versatile choice for urban commuting and leisure rides. This scooter combines style, performance, and convenience. With a robust battery, advanced features like an LCD display and LED headlamp, and the versatility of water resistance and foldability, its an excellent choice for urban commuting, recreational rides, and more. Riders of all ages will appreciate its user-friendly design and eco-conscious operation.", "14", "https://hmadmin.hamleys.in/product/494348364/300/LilE%20product%20DP%20blue.jpg", "EMotorad Lile Kidz Freedom is Here Kick E-Scooter Blue", "34999", 5 },
-                    { 10, "8-10years", new DateTime(2024, 8, 2, 20, 4, 15, 389, DateTimeKind.Local).AddTicks(9668), 5, 2, "Compact and easy to carry, it is an ideal mate for your everyday leisure cricket and vacations", "0", "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/491960045/300/491960045-1.jpeg", "Speed Up Leisure Cricket Set Kids Toye", "1499", 2 }
+                    { 6, "8-10years", new DateTime(2024, 8, 4, 19, 12, 2, 314, DateTimeKind.Local).AddTicks(4136), 2, 2, "Elevate your cricket game with the PLAYNXT Yellow Pro Set Cricket Set. This complete premium kit includes a professional bat, stumps, base, bails, and a tennis ball, providing an authentic cricket experience for boys aged 8 years and above. The bat features a rubber grip and curved blade for powerful strokes, while the realistic stumps with durable base and bails add to the immersive gameplay. This cricket set not only enhances motor skills and hand-eye coordination but also fosters decision-making and teamwork. Made from high-quality HDPE plastic, it ensures safety for kids. With its trendy sports bag, this set is easily portable for outdoor play. Take your cricket skills to new heights with PLAYNXT!", "10", "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/491185768/300/491185768-1.webp", "Playnxt Yellow Pro Set Cricket Set Outdoor Sports for Boys", "1700", 2 },
+                    { 7, "3-5years", new DateTime(2024, 8, 4, 19, 12, 2, 314, DateTimeKind.Local).AddTicks(4160), 6, 3, "When young imaginations move into the Barbie Dreamhouse, they turn this amazing dollhouse into a dream home! More than 3 feet tall and 4 feet wide, the Barbie Dreamhouse has so many amazing features - three stories, eight rooms that include a carport (car not included) and a home office, a working elevator that fits four dolls, a pool that has a slide descending from the story above, five pieces of transforming furniture, lights, sounds and more than 60 additional accessories, including an adorable puppy, that can all be used to decorate, set the scene and play out so many stories. Plug-and-play design helps keep pieces in place as small hands move around (and make clean up easy for adult hands!). Decorations and furniture for indoor and outdoor settings inspire play from all angles, and the transformations provide two-in-one fun while encouraging flexible action - the couch turns into bunk beds, the coffee table flips for a bed sized for Chelsea doll (sold separately), the fireplace becomes a home office, the refrigerator turns into an outdoor food stand and the oven houses a barbecue in back. Lights and sounds add even more delightful touches - the oven lights up and the timer ticks, the stovetop sizzles with the frying pan and whistles with the tea kettle and the toilet makes a flushing sound. Young decorators will have so much fun moving accessories around the house as they explore their personal style and tell all kinds of stories, from daytime to nighttime, indoor to outdoor, Barbie home alone or with a house full of friends and family (dolls sold separately). Pool parties, friend sleepovers, sister bonding, backyard BBQs, birthday, holidays and every day there are endless stories to tell and limitless ways to explore living in the Barbie Dreamhouse because with Barbie, anything is possible. Includes Barbie Dreamhouse and 70 accessories that include furniture, household items and a puppy; dolls, fashions and car not included. Colors and decorations may vary.", "10", "https://hmadmin.hamleys.in/product/491232286/300/491636216-2.jpg", "Barbie New Dream House", "22999", 6 },
+                    { 8, "5-7years", new DateTime(2024, 8, 4, 19, 12, 2, 314, DateTimeKind.Local).AddTicks(4165), 1, 2, "Football Size - 5, Durable, Leather Ball, Perfect gift for your loved ones", "10", "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/491489879/300/491489879-1.webp", "Hamleys Star Cross PVC Football for Kids", "899", 1 },
+                    { 9, "12-14years", new DateTime(2024, 8, 4, 19, 12, 2, 314, DateTimeKind.Local).AddTicks(4171), 5, 4, "The Lile Kidz Freedom is Here Kick E Scooter is an exceptional electric scooter tailored for riders aged 10 years and above. Packed with innovative features and boasting a sleek design, this e scooter offers a convenient and eco-friendly mode of transportation. With a 7.5Ah lithium-ion battery, it provides a range of up to 20 km on a single charge. The scooter features an LCD display, LED headlamp, thumb throttle, and 8.5 tires. Its foldable, lightweight, and boasts IPX4 water resistance, making it a versatile choice for urban commuting and leisure rides. This scooter combines style, performance, and convenience. With a robust battery, advanced features like an LCD display and LED headlamp, and the versatility of water resistance and foldability, its an excellent choice for urban commuting, recreational rides, and more. Riders of all ages will appreciate its user-friendly design and eco-conscious operation.", "14", "https://hmadmin.hamleys.in/product/494348364/300/LilE%20product%20DP%20blue.jpg", "EMotorad Lile Kidz Freedom is Here Kick E-Scooter Blue", "34999", 5 },
+                    { 10, "8-10years", new DateTime(2024, 8, 4, 19, 12, 2, 314, DateTimeKind.Local).AddTicks(4175), 2, 2, "Compact and easy to carry, it is an ideal mate for your everyday leisure cricket and vacations", "0", "https://cdn.pixelspray.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-product/491960045/300/491960045-1.jpeg", "Speed Up Leisure Cricket Set Kids Toye", "1499", 2 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -340,25 +319,8 @@ namespace Toy_Store_Management_Backend.Migrations
                 column: "ToyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_SuccessFulPaymentId",
-                table: "Orders",
-                column: "SuccessFulPaymentId",
-                unique: true,
-                filter: "[SuccessFulPaymentId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_OrderId",
-                table: "Payments",
-                column: "OrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_UserId",
-                table: "Payments",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -398,39 +360,11 @@ namespace Toy_Store_Management_Backend.Migrations
                 table: "Users",
                 column: "Email",
                 unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_OrderItems_Orders_OrderId",
-                table: "OrderItems",
-                column: "OrderId",
-                principalTable: "Orders",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Orders_Payments_SuccessFulPaymentId",
-                table: "Orders",
-                column: "SuccessFulPaymentId",
-                principalTable: "Payments",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Orders_Users_UserId",
-                table: "Orders");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Payments_Users_UserId",
-                table: "Payments");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Payments_Orders_OrderId",
-                table: "Payments");
-
             migrationBuilder.DropTable(
                 name: "CartItems");
 
@@ -450,22 +384,19 @@ namespace Toy_Store_Management_Backend.Migrations
                 name: "UserAuthDetails");
 
             migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "Toys");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Brands");
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "Payments");
         }
     }
 }

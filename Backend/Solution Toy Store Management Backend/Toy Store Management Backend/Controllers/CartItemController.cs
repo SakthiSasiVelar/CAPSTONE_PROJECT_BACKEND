@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Toy_Store_Management_Backend.DTOs;
 using Toy_Store_Management_Backend.Exceptions;
@@ -18,6 +19,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPost("cartItem/add")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<AddCartItemReturnDTO>> CartItemAdd([FromBody]AddCartItemDTO addCartItemDTO)
         {
@@ -34,6 +36,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPut("cartItem/update")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<UpdateCartItemReturnDTO>> CartItemUpdate([FromBody] UpdateCartItemDTO updateCartItemDTO)
         {
@@ -58,6 +61,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpDelete("cartItem/delete/{cartItemId}")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<DeleteCartItemReturnDTO>> CartItemDelete(int cartItemId)
         {
@@ -78,6 +82,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpGet("cartItem/get/user/{userId}")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<List<CartItemReturnDTO>>> GetCartItemByUserId(int userId)
         {
@@ -94,6 +99,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpDelete("cartItem/deleteList")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<List<CartItemReturnDTO>>> DeleteCartByList([FromBody] List<int> cartItemIdList)
         {

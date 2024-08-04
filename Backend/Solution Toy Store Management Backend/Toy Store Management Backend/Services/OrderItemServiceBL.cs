@@ -126,5 +126,19 @@ namespace Toy_Store_Management_Backend.Services
                 throw new OrderItemNotGetException(id);
             }
         }
+
+        public async Task<List<OrderItemReturnDTO>> GetAllOrderItemsList()
+        {
+
+            try
+            {
+                var orderItemList = await _orderItemRepository.GetAll();
+                return await new DTOMapper().OrderItemListToOrderItemReturnDTOList(orderItemList.ToList());
+            }
+            catch (Exception ex)
+            {
+                throw new OrderItemListNotGetException();
+            }
+        }
     }
 }

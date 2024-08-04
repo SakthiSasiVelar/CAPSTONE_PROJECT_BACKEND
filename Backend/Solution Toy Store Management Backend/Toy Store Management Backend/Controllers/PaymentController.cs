@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Toy_Store_Management_Backend.DTOs;
@@ -10,6 +11,7 @@ namespace Toy_Store_Management_Backend.Controllers
     public class PaymentController : ControllerBase
     {
         [HttpPost("create-payment-intent")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> CreatePaymentIntent([FromBody] CreatePaymentIntentRequestDTO request)
         {
             long amountInPaise = request.Amount * 100;

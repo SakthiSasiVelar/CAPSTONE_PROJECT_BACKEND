@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Toy_Store_Management_Backend.DTOs;
 using Toy_Store_Management_Backend.Exceptions;
@@ -18,6 +19,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPost("order/placeOrder")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<PlaceOrderReturnDTO>> OrderPlace([FromBody] PlaceOrderDTO placeOrderDTO)
         {
@@ -35,6 +37,7 @@ namespace Toy_Store_Management_Backend.Controllers
 
 
         [HttpGet("order/get/{orderId}")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<OrderReturnDTO>> GetOrder(int orderId)
         {

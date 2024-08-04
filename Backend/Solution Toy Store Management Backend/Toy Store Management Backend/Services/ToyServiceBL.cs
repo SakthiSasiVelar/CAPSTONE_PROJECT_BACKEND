@@ -325,5 +325,19 @@ namespace Toy_Store_Management_Backend.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<List<ToyFilterReturnDTO>> SearchToy(SearchDTO searchDTO)
+        {
+            try
+            {
+                var allToyList = await _toyRepository.GetAll();
+                var filteredList = allToyList.Where(t => t.Name.Contains(searchDTO.searchTerm, StringComparison.OrdinalIgnoreCase)).Take(5).ToList();
+                return await new DTOMapper().ToyListToToyFilterReturnDTOList(filteredList);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error in searching the toy");
+            }
+        }
     }
 }

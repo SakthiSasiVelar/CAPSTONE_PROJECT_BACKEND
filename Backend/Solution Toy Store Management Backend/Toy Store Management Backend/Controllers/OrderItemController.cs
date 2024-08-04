@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Toy_Store_Management_Backend.DTOs;
 using Toy_Store_Management_Backend.Exceptions;
@@ -19,6 +20,7 @@ namespace Toy_Store_Management_Backend.Controllers
 
 
         [HttpPut("orderItem/updateStatus")]
+        [Authorize(Roles = "Admin")]
 
         public async Task<ActionResult<UpdateOrderItemStatusReturnDTO>> UpdateStatus([FromBody] UpdateOrderItemStatusDTO updateOrderItemStatusDTO)
         {
@@ -40,6 +42,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpPut("orderItem/cancel")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<CancelOrderItemReturnDTO>> Cancel([FromBody] CancelOrderItemDTO cancelOrderItemDTO)
         {
@@ -61,8 +64,9 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpGet("orderItem/getAll/{userId}")]
+        [Authorize(Roles = "User")]
 
-        public async Task<ActionResult<List<OrderItemReturnDTO>>> GetAll(int userId)
+        public async Task<ActionResult<List<OrderItemReturnDTO>>> GetAllByUserId(int userId)
         {
             try
             {
@@ -93,6 +97,7 @@ namespace Toy_Store_Management_Backend.Controllers
         }
 
         [HttpGet("orderItem/get/{orderItemId}")]
+        [Authorize(Roles = "User")]
 
         public async Task<ActionResult<OrderItemReturnDTO>> Get(int orderItemId)
         {
@@ -105,6 +110,23 @@ namespace Toy_Store_Management_Backend.Controllers
             catch (OrderNotFoundException ex)
             {
                 return NotFound(new ErrorModel(404, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel(500, ex.Message));
+            }
+        }
+
+        [HttpGet("orderItem/getAll")]
+        [Authorize(Roles = "Admin")]
+
+        public async Task<ActionResult<List<OrderItemReturnDTO>>> GetAll( )
+        {
+            try
+            {
+                var result = await _orderItemService.GetAllOrderItemsList();
+                var response = new SuccessResponseModel<List<OrderItemReturnDTO>>(200, "order item list fetched successfully", result);
+                return Ok(response);
             }
             catch (Exception ex)
             {

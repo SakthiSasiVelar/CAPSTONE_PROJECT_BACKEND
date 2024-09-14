@@ -96,16 +96,20 @@ namespace Toy_Store_Management_Backend.Controllers
             }
         }
 
-        [HttpGet("orderItem/get/{orderItemId}")]
-        [Authorize(Roles = "User")]
+        [HttpGet("orderItem/get/{orderItemId}/{userId}")]
+         [Authorize(Roles = "User")]
 
-        public async Task<ActionResult<OrderItemReturnDTO>> Get(int orderItemId)
+        public async Task<ActionResult<OrderItemReturnDTO>> Get(int orderItemId , int userId)
         {
             try
             {
-                var result = await _orderItemService.GetCartItemById(orderItemId);
+                var result = await _orderItemService.GetCartItemById(orderItemId , userId);
                 var response = new SuccessResponseModel<OrderItemReturnDTO>(200, " order item  fetched successfully", result);
                 return Ok(response);
+            }
+            catch(NotValidUserToGetOrderItem ex)
+            {
+                return StatusCode(403 , new ErrorModel(403,ex.Message));
             }
             catch (OrderNotFoundException ex)
             {
@@ -117,7 +121,7 @@ namespace Toy_Store_Management_Backend.Controllers
             }
         }
 
-        [HttpGet("orderItem/getAll")]
+       [HttpGet("orderItem/getAll")]
         [Authorize(Roles = "Admin")]
 
         public async Task<ActionResult<List<OrderItemReturnDTO>>> GetAll( )

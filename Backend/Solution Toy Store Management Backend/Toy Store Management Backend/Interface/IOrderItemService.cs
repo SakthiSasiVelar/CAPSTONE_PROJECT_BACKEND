@@ -12,7 +12,7 @@ namespace Toy_Store_Management_Backend.Interface
 
         public Task<List<OrderItemReturnDTO>> FilterByStatus(string status);
 
-        public Task<OrderItemReturnDTO> GetCartItemById (int id);
+        public Task<OrderItemReturnDTO> GetCartItemById (int id , int userId);
 
         public Task<List<OrderItemReturnDTO>> GetAllOrderItemsList();
 

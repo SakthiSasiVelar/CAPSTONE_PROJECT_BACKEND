@@ -101,11 +101,19 @@ namespace Toy_Store_Management_Backend.Services
             }
         }
 
-        public async Task<OrderItemReturnDTO> GetCartItemById(int id)
+        public async Task<OrderItemReturnDTO> GetCartItemById(int id, int userId)
         {
             try
             {
                 var orderItem = await _orderItemRepository.GetById(id);
+                var order = await _orderRepository.GetById(orderItem.OrderId);
+                if(order != null)
+                {
+                    if(order.UserId != userId)
+                    {
+                        throw new NotValidUserToGetOrderItem();
+                    }
+                }
                 OrderItemReturnDTO orderItemReturnDTO = new OrderItemReturnDTO() {
                     OrderId = orderItem.OrderId,
                     ToyId = orderItem.ToyId,
@@ -116,6 +124,10 @@ namespace Toy_Store_Management_Backend.Services
                     StatusActionDateTime = orderItem.StatusActionDateTime,
                 };
                 return orderItemReturnDTO;
+            }
+            catch(NotValidUserToGetOrderItem)
+            {
+                throw;
             }
             catch (OrderItemNotFoundException)
             {

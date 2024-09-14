@@ -142,13 +142,13 @@ namespace Toy_Store_Management_Backend.Services
                 if (!string.IsNullOrEmpty(toyMultipleFilterDTO.MinPrice))
                 {
                     var minPrice = decimal.Parse(toyMultipleFilterDTO.MinPrice);
-                    filteredToys = filteredToys.Where(t => decimal.Parse(t.Price) >= minPrice);
+                    filteredToys = filteredToys.Where(t => decimal.Parse(getPrice(t.Price, t.Discount)) >= minPrice);
                 }
 
                 if (!string.IsNullOrEmpty(toyMultipleFilterDTO.MaxPrice))
                 {
                     var maxPrice = decimal.Parse(toyMultipleFilterDTO.MaxPrice);
-                    filteredToys = filteredToys.Where(t => decimal.Parse(t.Price) <= maxPrice);
+                    filteredToys = filteredToys.Where(t => decimal.Parse(getPrice(t.Price , t.Discount)) <= maxPrice);
                 }
 
                 return await new DTOMapper().ToyListToToyFilterReturnDTOList(filteredToys.ToList());
@@ -158,6 +158,15 @@ namespace Toy_Store_Management_Backend.Services
             {
                 throw new Exception("Error in getting filtered toy list ");
             }
+        }
+
+        public string getPrice(string price , string discount)
+        {
+            int priceInt = int.Parse(price);
+            int discountInt = int.Parse(discount);
+            double discountedPrice = priceInt * (1 - (discountInt / 100.0));
+            string priceAfterDiscountString = ((int)Math.Floor(discountedPrice)).ToString();
+            return priceAfterDiscountString;
         }
 
         public async Task<int> GetCategoryId(string categoryName)
